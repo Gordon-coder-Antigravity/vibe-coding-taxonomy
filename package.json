@@ -1,0 +1,30 @@
+{
+  "name": "vibe-coding-taxonomy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive Architecture Taxonomy Explorer for Vibe Coding and Intent-Driven Software Engineering",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "vibe-coding",
+    "ai-ide",
+    "software-engineering",
+    "taxonomy",
+    "mcp",
+    "agentic-ai",
+    "github-pages"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "isomorphic-git": "^1.41.9",
+    "vite": "^6.2.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.8"
+  }
+}
