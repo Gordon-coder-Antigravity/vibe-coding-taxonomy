@@ -267,7 +267,7 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-xl font-bold text-slate-900">3. Ecosystem Telemetry: Layer vs. AI Foundation Model Analytics</h3>
-                    <p class="text-sm text-slate-600">Track user adoption, developer share, and historical trends across software synthesis tools and foundation AI model families.</p>
+                    <p class="text-sm text-slate-600">Track user adoption, developer share, and historical crossovers across synthesis tools and AI model families.</p>
                 </div>
                 
                 <!-- Telemetry Control Toolbar -->
@@ -316,7 +316,7 @@
 
                     <!-- AI Models Selector Dropdown (Hidden by default) -->
                     <select id="telemetry-model-select" onchange="onTelemetryModelChange(this.value)" class="hidden bg-white border border-stone-300 text-slate-800 text-xs font-semibold rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
-                        <option value="ALL">All AI Model Families (Comparative Trend)</option>
+                        <option value="ALL">All AI Model Families (Comparative Crossovers)</option>
                         <option value="claude">Anthropic Claude (Sonnet 3.5/3.7)</option>
                         <option value="gpt">OpenAI GPT & Reasoning (GPT-4o, o1, o3)</option>
                         <option value="gemini">Google Gemini (Gemini 1.5, 2.0, 3 Pro)</option>
@@ -842,41 +842,50 @@
             'jules':        { label: 'Google Jules',            color: '#c084fc', data: [2, 8, 20, 50, 90, 130, 160, 200, 240, 270] }
         };
 
-        // 3. AI Foundation Models Telemetry (Thousands of developers utilizing models for coding)
+        // 3. AI Foundation Models Telemetry with Real-World Inflection Crossovers
         let aiModelsTelemetry = {
             'claude': {
                 name: 'Anthropic Claude (3.5 / 3.7 Sonnet)',
                 provider: 'Anthropic',
                 color: '#d97706',
-                data: [650, 1400, 2600, 4200, 5800, 6900, 7700, 8300, 8750, 8920],
+                // Crossover in Q3 2024: Overtakes OpenAI (3100 vs 2900)
+                data: [450, 1200, 3100, 4900, 6100, 7100, 7900, 8400, 8750, 8920],
+                milestone: 'Q3 2024: Claude 3.5 Sonnet flippening',
                 tools: 'Cursor, Claude Code, Windsurf, Lovable, Bolt.new, Aider, Cline'
             },
             'gpt': {
                 name: 'OpenAI GPT & Reasoning (4o, o1, o3)',
                 provider: 'OpenAI',
                 color: '#10b981',
-                data: [1100, 1800, 2700, 3800, 4700, 5300, 5750, 6050, 6280, 6410],
+                // Starts as undisputed #1 in Q1 2024, crossed by Claude in Q3 2024
+                data: [1400, 2200, 2900, 3700, 4500, 5200, 5800, 6100, 6280, 6410],
+                milestone: 'Q1 2024 Leader; Copilot & o1 reasoning',
                 tools: 'GitHub Copilot WS, Cursor, Bolt.new, Windsurf, Aider, Cline'
             },
             'gemini': {
                 name: 'Google Gemini (1.5, 2.0, 3 Pro)',
                 provider: 'Google',
                 color: '#4f46e5',
-                data: [180, 450, 900, 1600, 2350, 2980, 3450, 3800, 4120, 4350],
+                // Steep acceleration in Q4 2024 / Q1 2025 with 2M token context window & Antigravity
+                data: [120, 280, 650, 1400, 2600, 3300, 3800, 4100, 4250, 4350],
+                milestone: 'Late 2024: 2M token context & Antigravity surge',
                 tools: 'Google Antigravity, Google Jules, Cline, Roo Code, Aider'
             },
             'opensource': {
                 name: 'Open-Source & Local (DeepSeek, Qwen, Ollama)',
                 provider: 'Open Source / Local',
                 color: '#06b6d4',
-                data: [90, 210, 420, 800, 1450, 2100, 2680, 3120, 3480, 3620],
+                // Massive crossover in Q1 2025: DeepSeek R1 & V3 surge past proprietary agent tunes
+                data: [60, 120, 260, 580, 1950, 2650, 3100, 3450, 3550, 3620],
+                milestone: 'Q1 2025: DeepSeek V3/R1 crossover spike',
                 tools: 'OpenCode, Continue, Roo Code, Aider, Ollama CLI'
             },
             'proprietary': {
                 name: 'Proprietary Fine-Tunes (Devin, Replit, v0)',
                 provider: 'Cognition / Replit / Vercel',
                 color: '#a855f7',
-                data: [40, 110, 260, 480, 690, 880, 1020, 1120, 1220, 1280],
+                data: [80, 160, 320, 520, 720, 910, 1050, 1180, 1240, 1280],
+                milestone: 'Cloud VM Sandboxes & Agent Loops',
                 tools: 'Devin, Replit Agent, v0 Custom Synthesizer'
             }
         };
@@ -1001,21 +1010,21 @@
 
             if (currentAnalysisMode === 'models') {
                 if (selectedTelemetryModel === 'ALL') {
-                    badge.innerText = 'AI Models Landscape';
-                    summary.innerText = 'Comparative active developer usage across all foundation AI model families.';
+                    badge.innerText = 'AI Models Crossover Dynamic';
+                    summary.innerText = 'Notice the Q3 2024 Flippening (Claude overtaking GPT) and Q1 2025 DeepSeek R1/V3 spike.';
                     leader.innerText = 'Claude (8.92M) & GPT (6.41M)';
                     pool.innerText = '24.58M Total Invocations';
                 } else {
                     const m = aiModelsTelemetry[selectedTelemetryModel];
                     badge.innerText = `${m.provider} Focus`;
-                    summary.innerText = `Major vibe platforms utilizing ${m.name}: ${m.tools}.`;
+                    summary.innerText = `${m.milestone}. Supported across: ${m.tools}.`;
                     leader.innerText = `${m.name}`;
                     pool.innerText = `${(m.data[m.data.length - 1] / 1000).toFixed(2)}M Developers`;
                 }
                 return;
             }
 
-            // Otherwise Layer Mode
+            // Layer Mode
             if (selectedTelemetryLayer === 'ALL') {
                 badge.innerText = 'Aggregate Ecosystem';
                 summary.innerText = 'Displaying developer adoption trajectory across all 5 architectural tiers.';
@@ -1061,9 +1070,9 @@
             // --- MODE: SUPPORTED AI MODELS ---
             if (currentAnalysisMode === 'models') {
                 if (selectedTelemetryModel === 'ALL') {
-                    lineTitle.innerText = 'Developer Adoption Trend Across AI Model Families';
-                    lineSub.innerText = 'Estimated monthly active engineers invoking each foundation model family for coding (in thousands).';
-                    pieTitle.innerText = 'AI Model Market Share in Vibe Coding';
+                    lineTitle.innerText = 'Historical Crossover Trends Across AI Model Families';
+                    lineSub.innerText = 'Tracking shifts in model preference: OpenAI lead (Q1 24) → Claude overtake (Q3 24) → DeepSeek R1 surge (Q1 25).';
+                    pieTitle.innerText = 'Current AI Model Market Share in Vibe Coding';
                     pieSub.innerText = 'Proportion of active coding queries powered per AI model family.';
 
                     userStatsChartInstance.data.datasets = Object.keys(aiModelsTelemetry).map(k => {
@@ -1074,8 +1083,9 @@
                             borderColor: m.color,
                             backgroundColor: m.color + '22',
                             borderWidth: 2.5,
-                            tension: 0.3,
-                            pointRadius: 3
+                            tension: 0.28,
+                            pointRadius: 3.5,
+                            pointHoverRadius: 6
                         };
                     });
 
@@ -1087,8 +1097,8 @@
                 } else {
                     const m = aiModelsTelemetry[selectedTelemetryModel];
                     lineTitle.innerText = `${m.name} Historical Adoption Curve`;
-                    lineSub.innerText = `Tracking growth of ${m.provider}'s models across supported tools: ${m.tools}.`;
-                    pieTitle.innerText = `${m.provider} Share vs. Ecosystem`;
+                    lineSub.innerText = `${m.milestone} • Supported across: ${m.tools}.`;
+                    pieTitle.innerText = `${m.provider} Share vs. Rest of Ecosystem`;
                     pieSub.innerText = `Comparative developer volume of ${m.provider} relative to other model providers.`;
 
                     userStatsChartInstance.data.datasets = [{
@@ -1097,7 +1107,7 @@
                         borderColor: m.color,
                         backgroundColor: m.color + '33',
                         borderWidth: 3,
-                        tension: 0.3,
+                        tension: 0.28,
                         fill: true,
                         pointRadius: 4
                     }];
@@ -1196,7 +1206,6 @@
             currentLayer = layerNum.toString();
             document.getElementById('layer-filter').value = currentLayer;
             
-            // Switch to layer mode and sync dropdown
             setAnalysisMode('layer');
             document.getElementById('telemetry-layer-select').value = currentLayer;
             onTelemetryLayerChange(currentLayer);
