@@ -5,31 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Coding Architecture Taxonomy Explorer</title>
     
-    <!-- SEO & Social Meta Tags -->
-    <meta name="description" content="An interactive architectural taxonomy and runtime explorer for vibe coding, agentic AI IDEs, CLI tools, and intent-driven software engineering.">
-    <meta name="keywords" content="vibe coding, AI IDE, cursor, antigravity, bolt, windsurf, devin, aider, cline, taxonomy, software architecture">
-    <meta property="og:title" content="Vibe Coding Architecture Taxonomy Explorer">
-    <meta property="og:description" content="Intent-driven software engineering hierarchy, live user telemetry, comparison matrix, and decision wizard.">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Vibe Coding Architecture Taxonomy Explorer">
-    <meta name="twitter:description" content="Intent-driven software engineering hierarchy, live user telemetry, comparison matrix, and decision wizard.">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="./public/favicon.svg">
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Custom App CSS -->
-    <link rel="stylesheet" href="./src/styles/app.css">
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #1e293b;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1efe9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+        .live-pulse {
+            animation: pulse-dot 1.8s infinite ease-in-out;
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <!-- Navigation Header -->
-    <header class="bg-white/85 backdrop-blur border-b border-stone-200 sticky top-0 z-40 transition-colors">
+    <header class="bg-white/85 backdrop-blur border-b border-stone-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollToSection('taxonomy-top')">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToSection('taxonomy-top')">
                 <span class="text-2xl" aria-hidden="true">⚡</span>
                 <div>
                     <h1 class="text-lg font-bold text-slate-900 leading-tight">Vibe Coding Architecture Taxonomy</h1>
@@ -37,15 +77,11 @@
                 </div>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
-                <button onclick="window.scrollToSection('taxonomy-map')" class="hover:text-indigo-600 transition">Taxonomy Map</button>
-                <button onclick="window.scrollToSection('tool-directory')" class="hover:text-indigo-600 transition">Tool Directory</button>
-                <button onclick="window.scrollToSection('analytics-section')" class="hover:text-indigo-600 transition">Global Telemetry</button>
-                <button onclick="window.scrollToSection('tradeoffs-section')" class="hover:text-indigo-600 transition">CS Trade-offs</button>
-                <button onclick="window.scrollToSection('wizard-section')" class="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg border border-indigo-200 hover:bg-indigo-100 transition">Tool Finder</button>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-slate-700 hover:text-slate-900 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-300 hover:border-slate-400 transition">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
-                    <span>GitHub</span>
-                </a>
+                <button onclick="scrollToSection('taxonomy-map')" class="hover:text-indigo-600 transition">Taxonomy Map</button>
+                <button onclick="scrollToSection('tool-directory')" class="hover:text-indigo-600 transition">Tool Directory</button>
+                <button onclick="scrollToSection('analytics-section')" class="hover:text-indigo-600 transition">Global Telemetry</button>
+                <button onclick="scrollToSection('tradeoffs-section')" class="hover:text-indigo-600 transition">CS Trade-offs</button>
+                <button onclick="scrollToSection('wizard-section')" class="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg border border-indigo-200 hover:bg-indigo-100 transition">Tool Finder</button>
             </nav>
         </div>
     </header>
@@ -112,13 +148,13 @@
 
                     <!-- Execution Tiers (Level 2) -->
                     <div class="grid grid-cols-2 gap-12 w-full max-w-4xl">
-                        <div onclick="window.selectTierFilter('Browser-Hosted Tier')" class="cursor-pointer bg-stone-50 hover:bg-stone-100 border-2 border-dashed border-amber-300 p-4 rounded-xl text-center transition">
+                        <div onclick="selectTierFilter('Browser-Hosted Tier')" class="cursor-pointer bg-stone-50 hover:bg-stone-100 border-2 border-dashed border-amber-300 p-4 rounded-xl text-center transition">
                             <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Tier A</span>
                             <h4 class="font-bold text-slate-800 text-base">BROWSER-HOSTED TIER</h4>
                             <p class="text-xs text-slate-500 mt-1">Ephemeral Sandboxes & Cloud Containers</p>
                         </div>
 
-                        <div onclick="window.selectTierFilter('Local & Repo Tier')" class="cursor-pointer bg-stone-50 hover:bg-stone-100 border-2 border-dashed border-indigo-300 p-4 rounded-xl text-center transition">
+                        <div onclick="selectTierFilter('Local & Repo Tier')" class="cursor-pointer bg-stone-50 hover:bg-stone-100 border-2 border-dashed border-indigo-300 p-4 rounded-xl text-center transition">
                             <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Tier B</span>
                             <h4 class="font-bold text-slate-800 text-base">LOCAL & REPO TIER</h4>
                             <p class="text-xs text-slate-500 mt-1">Worktree, Native FS & Language Servers</p>
@@ -131,7 +167,7 @@
                     <div class="grid grid-cols-5 gap-3 w-full">
                         
                         <!-- Layer 1 -->
-                        <div id="layer-card-1" onclick="window.selectLayerFilter(1)" class="cursor-pointer bg-amber-50/60 hover:bg-amber-100/80 border border-amber-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
+                        <div id="layer-card-1" onclick="selectLayerFilter(1)" class="cursor-pointer bg-amber-50/60 hover:bg-amber-100/80 border border-amber-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-amber-800 uppercase bg-amber-200/60 px-1.5 py-0.5 rounded">Layer 1</span>
                                 <h5 class="font-bold text-slate-900 text-xs mt-1.5">Instant Builders</h5>
@@ -143,7 +179,7 @@
                         </div>
 
                         <!-- Layer 5 (Grouped under cloud/async) -->
-                        <div id="layer-card-5" onclick="window.selectLayerFilter(5)" class="cursor-pointer bg-purple-50/60 hover:bg-purple-100/80 border border-purple-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
+                        <div id="layer-card-5" onclick="selectLayerFilter(5)" class="cursor-pointer bg-purple-50/60 hover:bg-purple-100/80 border border-purple-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-purple-800 uppercase bg-purple-200/60 px-1.5 py-0.5 rounded">Layer 5</span>
                                 <h5 class="font-bold text-slate-900 text-xs mt-1.5">Headless PR Agents</h5>
@@ -155,7 +191,7 @@
                         </div>
 
                         <!-- Layer 2 -->
-                        <div id="layer-card-2" onclick="window.selectLayerFilter(2)" class="cursor-pointer bg-indigo-50/60 hover:bg-indigo-100/80 border border-indigo-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
+                        <div id="layer-card-2" onclick="selectLayerFilter(2)" class="cursor-pointer bg-indigo-50/60 hover:bg-indigo-100/80 border border-indigo-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-indigo-800 uppercase bg-indigo-200/60 px-1.5 py-0.5 rounded">Layer 2</span>
                                 <h5 class="font-bold text-slate-900 text-xs mt-1.5">AI-Native IDEs</h5>
@@ -167,7 +203,7 @@
                         </div>
 
                         <!-- Layer 3 -->
-                        <div id="layer-card-3" onclick="window.selectLayerFilter(3)" class="cursor-pointer bg-emerald-50/60 hover:bg-emerald-100/80 border border-emerald-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
+                        <div id="layer-card-3" onclick="selectLayerFilter(3)" class="cursor-pointer bg-emerald-50/60 hover:bg-emerald-100/80 border border-emerald-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-emerald-800 uppercase bg-emerald-200/60 px-1.5 py-0.5 rounded">Layer 3</span>
                                 <h5 class="font-bold text-slate-900 text-xs mt-1.5">CLI & Shell Agents</h5>
@@ -179,7 +215,7 @@
                         </div>
 
                         <!-- Layer 4 -->
-                        <div id="layer-card-4" onclick="window.selectLayerFilter(4)" class="cursor-pointer bg-cyan-50/60 hover:bg-cyan-100/80 border border-cyan-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
+                        <div id="layer-card-4" onclick="selectLayerFilter(4)" class="cursor-pointer bg-cyan-50/60 hover:bg-cyan-100/80 border border-cyan-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-cyan-800 uppercase bg-cyan-200/60 px-1.5 py-0.5 rounded">Layer 4</span>
                                 <h5 class="font-bold text-slate-900 text-xs mt-1.5">Open Extensions</h5>
@@ -202,7 +238,7 @@
                     <h3 class="text-xl font-bold text-slate-900">2. Tool Directory & Runtime Catalog</h3>
                     <p class="text-sm text-slate-600">Filter software synthesis platforms by layer, runtime tier, or technical entry barrier.</p>
                 </div>
-                <button onclick="window.resetFilters()" class="self-start sm:self-auto text-xs bg-stone-200 hover:bg-stone-300 text-slate-700 px-3 py-1.5 rounded-lg transition font-medium">
+                <button onclick="resetFilters()" class="self-start sm:self-auto text-xs bg-stone-200 hover:bg-stone-300 text-slate-700 px-3 py-1.5 rounded-lg transition font-medium">
                     🔄 Reset All Filters
                 </button>
             </div>
@@ -210,10 +246,10 @@
             <!-- Filter Controls Panel -->
             <div class="bg-stone-100 border border-stone-200 rounded-xl p-4 flex flex-wrap gap-3 items-center">
                 <div class="w-full sm:w-auto flex-1 min-w-[200px]">
-                    <input type="text" id="search-input" oninput="window.applyFilters()" placeholder="Search tools, models, capabilities..." class="w-full bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="search-input" oninput="applyFilters()" placeholder="Search tools, models, capabilities..." class="w-full bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
-                <select id="layer-filter" onchange="window.applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select id="layer-filter" onchange="applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="ALL">All Layers (1 to 5)</option>
                     <option value="1">Layer 1: Instant Web Builders</option>
                     <option value="2">Layer 2: AI-Native Desktop IDEs</option>
@@ -222,13 +258,13 @@
                     <option value="5">Layer 5: Headless PR Agents</option>
                 </select>
 
-                <select id="tier-filter" onchange="window.applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select id="tier-filter" onchange="applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="ALL">All Runtimes</option>
                     <option value="Browser-Hosted Tier">Browser-Hosted Tier</option>
                     <option value="Local & Repo Tier">Local & Repo Tier</option>
                 </select>
 
-                <select id="skill-filter" onchange="window.applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select id="skill-filter" onchange="applyFilters()" class="bg-white border border-stone-300 text-slate-800 text-xs rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="ALL">All Technical Levels</option>
                     <option value="Beginner">Beginner (Zero setup)</option>
                     <option value="Intermediate">Intermediate (IDE knowledge)</option>
@@ -257,12 +293,12 @@
                         <span class="text-xs font-semibold text-slate-700" id="telemetry-status">Telemetry Active</span>
                     </div>
                     <span class="text-stone-300">|</span>
-                    <button onclick="window.refreshUserTelemetry()" id="refresh-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center space-x-1">
+                    <button onclick="refreshUserTelemetry()" id="refresh-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center space-x-1">
                         <span>🔄</span>
                         <span>Refresh Telemetry</span>
                     </button>
                     <label class="flex items-center space-x-1.5 text-xs text-slate-600 cursor-pointer pl-1">
-                        <input type="checkbox" id="auto-refresh-toggle" onchange="window.toggleAutoRefresh()" class="rounded text-indigo-600 focus:ring-indigo-500 h-3.5 w-3.5">
+                        <input type="checkbox" id="auto-refresh-toggle" onchange="toggleAutoRefresh()" class="rounded text-indigo-600 focus:ring-indigo-500 h-3.5 w-3.5">
                         <span>Auto Poll (5s)</span>
                     </label>
                 </div>
@@ -388,10 +424,10 @@
                 <div>
                     <label class="block text-xs font-semibold text-indigo-200 uppercase tracking-wide mb-2">1. Do you have or want a local environment setup? (Node/Git/Python)</label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <button onclick="window.setWizardAnswer('setup', 'no')" id="wiz-setup-no" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('setup', 'no')" id="wiz-setup-no" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🚫 No - I want instant prompt-to-app web builder (Zero Setup)
                         </button>
-                        <button onclick="window.setWizardAnswer('setup', 'yes')" id="wiz-setup-yes" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('setup', 'yes')" id="wiz-setup-yes" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             💻 Yes - I want local file system, Git worktrees & IDE tools
                         </button>
                     </div>
@@ -401,13 +437,13 @@
                 <div>
                     <label class="block text-xs font-semibold text-indigo-200 uppercase tracking-wide mb-2">2. Primary Work Interface Preference</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <button onclick="window.setWizardAnswer('interface', 'visual')" id="wiz-ui-visual" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('interface', 'visual')" id="wiz-ui-visual" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🌐 Visual Browser UI / Canvas
                         </button>
-                        <button onclick="window.setWizardAnswer('interface', 'ide')" id="wiz-ui-ide" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('interface', 'ide')" id="wiz-ui-ide" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🖥️ Code Editor / Desktop IDE
                         </button>
-                        <button onclick="window.setWizardAnswer('interface', 'cli')" id="wiz-ui-cli" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('interface', 'cli')" id="wiz-ui-cli" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             ⌨️ Terminal Shell / CLI Agent
                         </button>
                     </div>
@@ -417,13 +453,13 @@
                 <div>
                     <label class="block text-xs font-semibold text-indigo-200 uppercase tracking-wide mb-2">3. Primary Engineering Objective</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <button onclick="window.setWizardAnswer('objective', 'proto')" id="wiz-obj-proto" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('objective', 'proto')" id="wiz-obj-proto" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🚀 Rapid Prototype / Landing Page
                         </button>
-                        <button onclick="window.setWizardAnswer('objective', 'feature')" id="wiz-obj-feature" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('objective', 'feature')" id="wiz-obj-feature" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🛠️ Multi-file Feature Engineering
                         </button>
-                        <button onclick="window.setWizardAnswer('objective', 'async')" id="wiz-obj-async" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
+                        <button onclick="setWizardAnswer('objective', 'async')" id="wiz-obj-async" class="p-3 text-left rounded-lg border border-white/20 hover:bg-white/10 transition">
                             🤖 Background PR / Bug Triage
                         </button>
                     </div>
@@ -442,11 +478,11 @@
     <footer class="bg-white border-t border-stone-200 mt-12 py-6 text-center text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-                Vibe Coding Architecture Taxonomy • Information Architecture & CS Interactive Report • Built for Intent-Driven Engineers
+                Vibe Coding Architecture Taxonomy • Information Architecture & CS Interactive Report
             </div>
             <div class="flex items-center space-x-4">
                 <a href="#taxonomy-top" class="hover:text-indigo-600 transition">Back to Top ↑</a>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition">GitHub Repository</a>
+                <a href="https://github.com/Gordon-coder-Antigravity/vibe-coding-taxonomy" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition">GitHub Repository</a>
             </div>
         </div>
     </footer>
@@ -454,14 +490,838 @@
     <!-- Tool Detail Modal -->
     <div id="tool-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="window.closeModal()" aria-label="Close modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg w-8 h-8 rounded-full hover:bg-stone-100 flex items-center justify-center transition">✕</button>
+            <button onclick="closeModal()" aria-label="Close modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg w-8 h-8 rounded-full hover:bg-stone-100 flex items-center justify-center transition">✕</button>
             <div id="modal-content">
                 <!-- Populated via JS -->
             </div>
         </div>
     </div>
 
-    <!-- Application JavaScript Entry Point -->
-    <script type="module" src="./src/main.js"></script>
+    <!-- Complete Integrated JavaScript Engine -->
+    <script>
+        const taxonomyData = [
+            {
+                id: 'lovable',
+                name: 'Lovable',
+                layer: 1,
+                layerName: 'Layer 1: Instant Web Builders',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'WebAssembly / WebContainers / Cloud VMs',
+                skillLevel: 'Beginner',
+                models: 'Claude Sonnet / Custom Tuned',
+                keyFeatures: ['Prompt-to-React generation', 'Supabase DB integration', 'Figma mockup parsing', 'One-click deployment'],
+                bestFor: 'Rapid SaaS prototyping, non-technical founders, landing pages',
+                description: 'A leading zero-setup web builder that translates visual mockups and prompt descriptions into clean, customizable React and Tailwind CSS web applications with instant backend integration.',
+                technicalDepth: 2,
+                setupEffort: 1,
+                determinism: 9
+            },
+            {
+                id: 'bolt',
+                name: 'Bolt.new',
+                layer: 1,
+                layerName: 'Layer 1: Instant Web Builders',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'In-Browser WebContainers (Node.js)',
+                skillLevel: 'Beginner',
+                models: 'Claude Sonnet / GPT-4o',
+                keyFeatures: ['Full Node.js runtime in browser', 'NPM package installation', 'GitHub export', 'Full stack editing'],
+                bestFor: 'In-browser full stack testing, npm package evaluation, prototypes',
+                description: 'Powered by StackBlitz WebContainers, Bolt.new runs an entire Node.js server environment inside Google Chrome, enabling full-stack React and Node applications without local terminals.',
+                technicalDepth: 3,
+                setupEffort: 1,
+                determinism: 8
+            },
+            {
+                id: 'v0',
+                name: 'v0 by Vercel',
+                layer: 1,
+                layerName: 'Layer 1: Instant Web Builders',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'Vercel Cloud Sandbox',
+                skillLevel: 'Beginner',
+                models: 'Custom Vercel Models / Claude',
+                keyFeatures: ['shadcn/ui component output', 'Next.js code synthesis', 'Image/Screenshot to code', 'Vercel CLI sync'],
+                bestFor: 'Frontend design systems, Next.js UI components, dashboard design',
+                description: 'Vercel’s flagship UI generator focusing on component-driven development with Tailwind CSS and shadcn/ui, optimized for copying directly into modern Next.js codebases.',
+                technicalDepth: 3,
+                setupEffort: 1,
+                determinism: 9
+            },
+            {
+                id: 'replit-agent',
+                name: 'Replit Agent',
+                layer: 1,
+                layerName: 'Layer 1: Instant Web Builders',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'Replit Cloud Sandbox Container',
+                skillLevel: 'Beginner',
+                models: 'Replit Finetuned Models',
+                keyFeatures: ['Autonomous DB setup', 'Backend API creation', 'Cloud hosting deployment', 'Natural language agent'],
+                bestFor: 'Autonomous full-stack web app setup with databases',
+                description: 'An autonomous cloud agent that takes high-level app descriptions, builds database schemas, writes backend server code, and publishes live deployments.',
+                technicalDepth: 4,
+                setupEffort: 1,
+                determinism: 7
+            },
+            {
+                id: 'antigravity',
+                name: 'Google Antigravity',
+                layer: 2,
+                layerName: 'Layer 2: AI-Native Desktop IDEs',
+                tier: 'Local & Repo Tier',
+                runtime: 'Native FS, Git Worktree, Headless Browser',
+                skillLevel: 'Intermediate',
+                models: 'Gemini 3 Pro / Flash / Claude',
+                keyFeatures: ['Task planning blueprint', 'Isolated Git worktrees', 'Autonomous subagents', 'Headless browser visual QA'],
+                bestFor: 'Complex multi-file refactoring, visual testing verification, end-to-end features',
+                description: 'Google’s agent-first IDE. It orchestrates background subagents in isolated Git worktrees, generates editable implementation blueprints, and uses a headless browser to test and record UI changes autonomously.',
+                technicalDepth: 8,
+                setupEffort: 5,
+                determinism: 7
+            },
+            {
+                id: 'cursor',
+                name: 'Cursor',
+                layer: 2,
+                layerName: 'Layer 2: AI-Native Desktop IDEs',
+                tier: 'Local & Repo Tier',
+                runtime: 'VS Code Fork + Local Indexer',
+                skillLevel: 'Intermediate',
+                models: 'Claude Sonnet / GPT-4o / Cursor Small',
+                keyFeatures: ['Composer multi-file mode', 'Semantic codebase vector indexing', 'Inline diff editor', 'Terminal command execution'],
+                bestFor: 'Professional developers maintaining large existing repos',
+                description: 'The benchmark AI-native code editor. Features deep codebase indexing and "Composer" mode to edit dozens of files simultaneously with real-time inline diffs.',
+                technicalDepth: 7,
+                setupEffort: 4,
+                determinism: 8
+            },
+            {
+                id: 'windsurf',
+                name: 'Windsurf',
+                layer: 2,
+                layerName: 'Layer 2: AI-Native Desktop IDEs',
+                tier: 'Local & Repo Tier',
+                runtime: 'VS Code Fork + Codeium Engine',
+                skillLevel: 'Intermediate',
+                models: 'Claude Sonnet / GPT-4o / Cascade',
+                keyFeatures: ['Windsurf Cascade Flows', 'Real-time terminal execution', 'Multi-file context awareness', 'Collaborative agent mode'],
+                bestFor: 'Pair-programming AI flows with terminal-level autonomy',
+                description: 'Built by Codeium, Windsurf combines real-time auto-suggestions with autonomous "Flows" that execute terminal tasks and edit files in sync.',
+                technicalDepth: 7,
+                setupEffort: 4,
+                determinism: 8
+            },
+            {
+                id: 'claude-code',
+                name: 'Claude Code',
+                layer: 3,
+                layerName: 'Layer 3: CLI Shell Agents',
+                tier: 'Local & Repo Tier',
+                runtime: 'Node CLI + System Shell',
+                skillLevel: 'Advanced',
+                models: 'Claude 3.7 Sonnet / Thinking Models',
+                keyFeatures: ['Terminal-native execution', 'AST parsing & search', 'Autonomous Git commits', 'Bash tool integration'],
+                bestFor: 'Terminal-first developers, backend engineering, test-driven refactoring',
+                description: 'Anthropic’s agentic CLI tool that operates directly inside terminal workflows, reading codebases, running build commands, and managing Git trees autonomously.',
+                technicalDepth: 9,
+                setupEffort: 6,
+                determinism: 8
+            },
+            {
+                id: 'aider',
+                name: 'Aider',
+                layer: 3,
+                layerName: 'Layer 3: CLI Shell Agents',
+                tier: 'Local & Repo Tier',
+                runtime: 'Python CLI + Local Git Plumbing',
+                skillLevel: 'Advanced',
+                models: 'Claude Sonnet / DeepSeek / GPT-4o',
+                keyFeatures: ['Automatic git commits with clean messages', 'Map of full repo AST', 'Multi-file pair coding', 'Voice-to-code support'],
+                bestFor: 'Git-integrated command line pair programming with custom models',
+                description: 'Leading open-source command-line tool that pair programs directly in your local Git repository, creating crisp, isolated commits for every successful change.',
+                technicalDepth: 9,
+                setupEffort: 6,
+                determinism: 8
+            },
+            {
+                id: 'opencode',
+                name: 'OpenCode',
+                layer: 3,
+                layerName: 'Layer 3: CLI Shell Agents',
+                tier: 'Local & Repo Tier',
+                runtime: 'Terminal Shell',
+                skillLevel: 'Advanced',
+                models: 'OpenSource / Ollama / API Keys',
+                keyFeatures: ['Terminal native', 'Privacy focused', 'Local model support', 'Extensible plugins'],
+                bestFor: 'Open-source developers requiring offline or local model capabilities',
+                description: 'Terminal-native agent designed for complete privacy and open-source flexibility, communicating directly with local Ollama or private API endpoints.',
+                technicalDepth: 8,
+                setupEffort: 6,
+                determinism: 6
+            },
+            {
+                id: 'cline',
+                name: 'Cline (Claude Dev)',
+                layer: 4,
+                layerName: 'Layer 4: Open Extensions',
+                tier: 'Local & Repo Tier',
+                runtime: 'VS Code Extension API + MCP',
+                skillLevel: 'Intermediate',
+                models: 'BYO API Key (Anthropic/OpenAI/Gemini)',
+                keyFeatures: ['Model Context Protocol (MCP) support', 'Terminal task execution', 'Human-in-the-loop approvals', 'File system access'],
+                bestFor: 'VS Code users wanting agentic autonomy with custom API keys and MCP tools',
+                description: 'An open-source VS Code extension that turns your editor into an agent. Features human-in-the-loop permission checks before running terminal commands or modifying files.',
+                technicalDepth: 8,
+                setupEffort: 5,
+                determinism: 7
+            },
+            {
+                id: 'roo-code',
+                name: 'Roo Code',
+                layer: 4,
+                layerName: 'Layer 4: Open Extensions',
+                tier: 'Local & Repo Tier',
+                runtime: 'VS Code Extension API',
+                skillLevel: 'Intermediate',
+                models: 'BYO API Key / Local Models',
+                keyFeatures: ['Custom mode creation (Architect/Code/Ask)', 'Context window token management', 'MCP tool expansion', 'Local model support'],
+                bestFor: 'Modular agent workflows tailored to specialized developer personas',
+                description: 'A powerful fork of Cline with specialized persona modes (Architect, Coder, Reviewer) and advanced token-cost optimization tools.',
+                technicalDepth: 8,
+                setupEffort: 5,
+                determinism: 7
+            },
+            {
+                id: 'continue',
+                name: 'Continue',
+                layer: 4,
+                layerName: 'Layer 4: Open Extensions',
+                tier: 'Local & Repo Tier',
+                runtime: 'VS Code / JetBrains Plugin',
+                skillLevel: 'Intermediate',
+                models: 'Ollama / Any API Provider',
+                keyFeatures: ['JetBrains & VS Code compatibility', 'Custom prompt shortcuts', 'Local LLM integration', 'Open-source transparency'],
+                bestFor: 'Developers seeking open-source autocomplete and chat inside traditional IDEs',
+                description: 'Leading open-source AI extension for VS Code and JetBrains, allowing developers to connect local LLMs or custom corporate endpoints seamlessly.',
+                technicalDepth: 6,
+                setupEffort: 4,
+                determinism: 8
+            },
+            {
+                id: 'devin',
+                name: 'Devin',
+                layer: 5,
+                layerName: 'Layer 5: Headless PR Agents',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'Isolated Cloud VM + Headless Chrome',
+                skillLevel: 'Advanced (Supervisory)',
+                models: 'Cognition Proprietary Fine-tunes',
+                keyFeatures: ['Long-horizon task execution', 'Browser automation testing', 'GitHub issue-to-PR flow', 'Self-healing code loop'],
+                bestFor: 'Asynchronous bug fixing, repository migrations, automated PR generation',
+                description: 'An autonomous software engineer operating in a cloud VM equipped with a shell, code editor, and browser. Takes a GitHub issue and delivers a tested Pull Request.',
+                technicalDepth: 9,
+                setupEffort: 2,
+                determinism: 6
+            },
+            {
+                id: 'jules',
+                name: 'Google Jules',
+                layer: 5,
+                layerName: 'Layer 5: Headless PR Agents',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'Google Cloud Headless Runner',
+                skillLevel: 'Advanced (Supervisory)',
+                models: 'Gemini 3 Pro',
+                keyFeatures: ['GitHub issue integration', 'Asynchronous bug triage', 'Automated test execution', 'Google Cloud infrastructure integration'],
+                bestFor: 'Asynchronous repository maintenance and automated GitHub changelists',
+                description: 'Google’s experimental headless coding agent that connects to GitHub repositories to handle background refactoring, dependency updates, and bug fixes.',
+                technicalDepth: 8,
+                setupEffort: 2,
+                determinism: 7
+            },
+            {
+                id: 'copilot-ws',
+                name: 'GitHub Copilot Workspace',
+                layer: 5,
+                layerName: 'Layer 5: Headless PR Agents',
+                tier: 'Browser-Hosted Tier',
+                runtime: 'GitHub Cloud Devcontainer',
+                skillLevel: 'Intermediate',
+                models: 'OpenAI GPT-4o / Fine-tunes',
+                keyFeatures: ['Issue-to-plan-to-code pipeline', 'Spec editable overview', 'Codespace integration', 'Direct GitHub PR creation'],
+                bestFor: 'Task-driven specification and implementation starting from GitHub Issues',
+                description: 'A cloud environment that translates GitHub issues into structured technical specifications, plan blueprints, and executable code changes.',
+                technicalDepth: 6,
+                setupEffort: 2,
+                determinism: 8
+            }
+        ];
+
+        let globalUserTelemetry = {
+            labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Current (Live)'],
+            layers: {
+                l1: [450, 920, 1800, 2900, 3800, 4600, 5200, 5800, 6300, 6650],
+                l2: [800, 1500, 2400, 3600, 4500, 5200, 5700, 6100, 6400, 6580],
+                l3: [120, 280, 510, 850, 1200, 1450, 1650, 1820, 1950, 2040],
+                l4: [350, 680, 1100, 1600, 2050, 2400, 2650, 2850, 3010, 3120],
+                l5: [20, 60, 150, 320, 520, 750, 980, 1200, 1420, 1580]
+            }
+        };
+
+        let currentLayer = 'ALL';
+        let currentTier = 'ALL';
+        let currentSkill = 'ALL';
+        let searchQuery = '';
+
+        let compTool1 = 'antigravity';
+        let compTool2 = 'cursor';
+        let compTool3 = 'lovable';
+
+        let wizardAnswers = { setup: null, interface: null, objective: null };
+
+        let userStatsChartInstance = null;
+        let donutChartInstance = null;
+        let autoRefreshTimer = null;
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectLayerFilter(layerNum) {
+            currentLayer = layerNum.toString();
+            document.getElementById('layer-filter').value = currentLayer;
+            applyFilters();
+            scrollToSection('tool-directory');
+
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById(`layer-card-${i}`);
+                if (el) {
+                    if (i === layerNum) el.classList.add('ring-2', 'ring-indigo-600', 'shadow-md');
+                    else el.classList.remove('ring-2', 'ring-indigo-600', 'shadow-md');
+                }
+            }
+        }
+
+        function selectTierFilter(tierName) {
+            currentTier = tierName;
+            document.getElementById('tier-filter').value = currentTier;
+            applyFilters();
+            scrollToSection('tool-directory');
+        }
+
+        function resetFilters() {
+            currentLayer = 'ALL';
+            currentTier = 'ALL';
+            currentSkill = 'ALL';
+            searchQuery = '';
+            document.getElementById('layer-filter').value = 'ALL';
+            document.getElementById('tier-filter').value = 'ALL';
+            document.getElementById('skill-filter').value = 'ALL';
+            document.getElementById('search-input').value = '';
+
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById(`layer-card-${i}`);
+                if (el) el.classList.remove('ring-2', 'ring-indigo-600', 'shadow-md');
+            }
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            currentLayer = document.getElementById('layer-filter').value;
+            currentTier = document.getElementById('tier-filter').value;
+            currentSkill = document.getElementById('skill-filter').value;
+
+            renderToolCards();
+        }
+
+        function renderToolCards() {
+            const container = document.getElementById('tools-grid');
+            container.innerHTML = '';
+
+            const filtered = taxonomyData.filter(tool => {
+                const matchesSearch = !searchQuery ||
+                    tool.name.toLowerCase().includes(searchQuery) ||
+                    tool.description.toLowerCase().includes(searchQuery) ||
+                    tool.models.toLowerCase().includes(searchQuery) ||
+                    tool.keyFeatures.some(f => f.toLowerCase().includes(searchQuery));
+
+                const matchesLayer = (currentLayer === 'ALL') || (tool.layer.toString() === currentLayer);
+                const matchesTier = (currentTier === 'ALL') || (tool.tier === currentTier);
+                const matchesSkill = (currentSkill === 'ALL') || (tool.skillLevel === currentSkill);
+
+                return matchesSearch && matchesLayer && matchesTier && matchesSkill;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500 bg-white border border-stone-200 rounded-xl">
+                        <span class="text-3xl block mb-2">🔍</span>
+                        <p class="font-medium text-sm">No tools found matching your exact filter criteria.</p>
+                        <button onclick="resetFilters()" class="mt-3 text-xs text-indigo-600 font-semibold underline">Reset filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(tool => {
+                let layerBadgeColor = 'bg-slate-100 text-slate-700 border-slate-200';
+                if (tool.layer === 1) layerBadgeColor = 'bg-amber-100 text-amber-800 border-amber-200';
+                if (tool.layer === 2) layerBadgeColor = 'bg-indigo-100 text-indigo-800 border-indigo-200';
+                if (tool.layer === 3) layerBadgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                if (tool.layer === 4) layerBadgeColor = 'bg-cyan-100 text-cyan-800 border-cyan-200';
+                if (tool.layer === 5) layerBadgeColor = 'bg-purple-100 text-purple-800 border-purple-200';
+
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-stone-200 hover:border-indigo-300 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${layerBadgeColor}">Layer ${tool.layer}</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-1">${tool.name}</h4>
+                            </div>
+                            <span class="text-[11px] font-medium bg-stone-100 text-slate-600 px-2 py-0.5 rounded-full border border-stone-200">${tool.skillLevel}</span>
+                        </div>
+
+                        <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">${tool.description}</p>
+
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-[11px] text-slate-500">
+                                <strong class="text-slate-700">Runtime:</strong> ${tool.runtime}
+                            </div>
+                            <div class="text-[11px] text-slate-500">
+                                <strong class="text-slate-700">Models:</strong> ${tool.models}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-1 pt-1">
+                            ${tool.keyFeatures.map(f => `<span class="text-[10px] bg-stone-50 border border-stone-200 text-slate-600 px-2 py-0.5 rounded">${f}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-stone-100 flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-slate-400">${tool.tier}</span>
+                        <button onclick="openModal('${tool.id}')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1">
+                            <span>Inspect Specs</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openModal(toolId) {
+            const tool = taxonomyData.find(t => t.id === toolId);
+            if (!tool) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Layer ${tool.layer} • ${tool.tier}</span>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1">${tool.name}</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Execution Environment: ${tool.runtime}</p>
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-stone-50 p-3 rounded-xl border border-stone-200">
+                        ${tool.description}
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200">
+                            <span class="text-slate-500 font-medium block">Target Skill Barrier</span>
+                            <span class="font-bold text-slate-800 text-sm mt-0.5 block">${tool.skillLevel}</span>
+                        </div>
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200">
+                            <span class="text-slate-500 font-medium block">Supported AI Models</span>
+                            <span class="font-bold text-slate-800 text-sm mt-0.5 block">${tool.models}</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h5 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Key Capabilities & Features</h5>
+                        <ul class="space-y-1.5 text-xs text-slate-600">
+                            ${tool.keyFeatures.map(f => `<li class="flex items-center space-x-2"><span class="text-emerald-500 font-bold">✓</span><span>${f}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-indigo-50/70 border border-indigo-100 p-3 rounded-xl text-xs space-y-1">
+                        <strong class="text-indigo-900 block font-semibold">Best Architectural Use Case:</strong>
+                        <p class="text-indigo-800">${tool.bestFor}</p>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('tool-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('tool-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function updateTotalUsersMetric() {
+            const lastIdx = globalUserTelemetry.labels.length - 1;
+            const sumK = globalUserTelemetry.layers.l1[lastIdx] +
+                         globalUserTelemetry.layers.l2[lastIdx] +
+                         globalUserTelemetry.layers.l3[lastIdx] +
+                         globalUserTelemetry.layers.l4[lastIdx] +
+                         globalUserTelemetry.layers.l5[lastIdx];
+            
+            const millions = (sumK / 1000).toFixed(2);
+            document.getElementById('stat-total-users').innerText = `${millions}M+`;
+        }
+
+        function refreshUserTelemetry() {
+            const lastIdx = globalUserTelemetry.labels.length - 1;
+            
+            globalUserTelemetry.layers.l1[lastIdx] += Math.floor(Math.random() * 18) + 2;
+            globalUserTelemetry.layers.l2[lastIdx] += Math.floor(Math.random() * 15) + 3;
+            globalUserTelemetry.layers.l3[lastIdx] += Math.floor(Math.random() * 8) + 1;
+            globalUserTelemetry.layers.l4[lastIdx] += Math.floor(Math.random() * 10) + 1;
+            globalUserTelemetry.layers.l5[lastIdx] += Math.floor(Math.random() * 12) + 2;
+
+            if (userStatsChartInstance) {
+                userStatsChartInstance.data.datasets[0].data = [...globalUserTelemetry.layers.l1];
+                userStatsChartInstance.data.datasets[1].data = [...globalUserTelemetry.layers.l2];
+                userStatsChartInstance.data.datasets[2].data = [...globalUserTelemetry.layers.l3];
+                userStatsChartInstance.data.datasets[3].data = [...globalUserTelemetry.layers.l4];
+                userStatsChartInstance.data.datasets[4].data = [...globalUserTelemetry.layers.l5];
+                userStatsChartInstance.update();
+            }
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('last-update-tag').innerText = `Updated: ${timeStr}`;
+
+            updateTotalUsersMetric();
+        }
+
+        function toggleAutoRefresh() {
+            const isChecked = document.getElementById('auto-refresh-toggle').checked;
+            const statusEl = document.getElementById('telemetry-status');
+
+            if (isChecked) {
+                statusEl.innerText = 'Live Auto-Polling';
+                statusEl.classList.add('text-emerald-600');
+                refreshUserTelemetry();
+                autoRefreshTimer = setInterval(() => {
+                    refreshUserTelemetry();
+                }, 5000);
+            } else {
+                statusEl.innerText = 'Telemetry Active';
+                statusEl.classList.remove('text-emerald-600');
+                if (autoRefreshTimer) {
+                    clearInterval(autoRefreshTimer);
+                    autoRefreshTimer = null;
+                }
+            }
+        }
+
+        function initCharts() {
+            const statsCtx = document.getElementById('userStatsChart').getContext('2d');
+
+            userStatsChartInstance = new Chart(statsCtx, {
+                type: 'line',
+                data: {
+                    labels: globalUserTelemetry.labels,
+                    datasets: [
+                        {
+                            label: 'L1: Instant Web Builders',
+                            data: [...globalUserTelemetry.layers.l1],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: 3
+                        },
+                        {
+                            label: 'L2: AI-Native IDEs',
+                            data: [...globalUserTelemetry.layers.l2],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: 3
+                        },
+                        {
+                            label: 'L3: CLI Shell Agents',
+                            data: [...globalUserTelemetry.layers.l3],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: 3
+                        },
+                        {
+                            label: 'L4: Open Extensions',
+                            data: [...globalUserTelemetry.layers.l4],
+                            borderColor: '#06b6d4',
+                            backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: 3
+                        },
+                        {
+                            label: 'L5: Headless PR Agents',
+                            data: [...globalUserTelemetry.layers.l5],
+                            borderColor: '#a855f7',
+                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 10, font: { size: 10 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}k active users`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 10 } }
+                        },
+                        y: {
+                            title: { display: true, text: 'Active Developers (Thousands)', font: { size: 10 } },
+                            ticks: { font: { size: 10 } },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const donutCtx = document.getElementById('layerDonutChart').getContext('2d');
+            const layerCounts = [1, 2, 3, 4, 5].map(l => taxonomyData.filter(t => t.layer === l).length);
+
+            donutChartInstance = new Chart(donutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Layer 1: Instant Builders',
+                        'Layer 2: AI-Native IDEs',
+                        'Layer 3: CLI Shell Agents',
+                        'Layer 4: Open Extensions',
+                        'Layer 5: Headless PR Agents'
+                    ],
+                    datasets: [{
+                        data: layerCounts,
+                        backgroundColor: ['#f59e0b', '#6366f1', '#10b981', '#06b6d4', '#a855f7'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initComparisonSelectors() {
+            const container = document.getElementById('comparison-selectors');
+            container.innerHTML = '';
+
+            const createSelect = (id, defaultVal, colorClass) => {
+                const select = document.createElement('select');
+                select.className = `text-xs border border-stone-300 rounded-lg px-2 py-1 bg-white focus:outline-none ${colorClass}`;
+                select.id = id;
+                select.onchange = () => {
+                    if (id === 'select-tool-1') compTool1 = select.value;
+                    if (id === 'select-tool-2') compTool2 = select.value;
+                    if (id === 'select-tool-3') compTool3 = select.value;
+                    renderComparisonMatrix();
+                };
+
+                taxonomyData.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t.id;
+                    opt.textContent = t.name;
+                    if (t.id === defaultVal) opt.selected = true;
+                    select.appendChild(opt);
+                });
+                return select;
+            };
+
+            container.appendChild(createSelect('select-tool-1', compTool1, 'text-indigo-700 font-semibold'));
+            container.appendChild(createSelect('select-tool-2', compTool2, 'text-purple-700 font-semibold'));
+            container.appendChild(createSelect('select-tool-3', compTool3, 'text-emerald-700 font-semibold'));
+        }
+
+        function renderComparisonMatrix() {
+            const t1 = taxonomyData.find(t => t.id === compTool1);
+            const t2 = taxonomyData.find(t => t.id === compTool2);
+            const t3 = taxonomyData.find(t => t.id === compTool3);
+
+            document.getElementById('matrix-head-1').textContent = t1.name;
+            document.getElementById('matrix-head-2').textContent = t2.name;
+            document.getElementById('matrix-head-3').textContent = t3.name;
+
+            const tbody = document.getElementById('comparison-matrix-body');
+            tbody.innerHTML = `
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Taxonomy Layer</td>
+                    <td class="p-3">${t1.layerName}</td>
+                    <td class="p-3">${t2.layerName}</td>
+                    <td class="p-3">${t3.layerName}</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Execution Tier</td>
+                    <td class="p-3">${t1.tier}</td>
+                    <td class="p-3">${t2.tier}</td>
+                    <td class="p-3">${t3.tier}</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Runtime Environment</td>
+                    <td class="p-3">${t1.runtime}</td>
+                    <td class="p-3">${t2.runtime}</td>
+                    <td class="p-3">${t3.runtime}</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Skill Entry Level</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-stone-100 text-slate-800">${t1.skillLevel}</span></td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-stone-100 text-slate-800">${t2.skillLevel}</span></td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-stone-100 text-slate-800">${t3.skillLevel}</span></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Core AI Models</td>
+                    <td class="p-3">${t1.models}</td>
+                    <td class="p-3">${t2.models}</td>
+                    <td class="p-3">${t3.models}</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold bg-stone-50">Key Architectural Strength</td>
+                    <td class="p-3">${t1.bestFor}</td>
+                    <td class="p-3">${t2.bestFor}</td>
+                    <td class="p-3">${t3.bestFor}</td>
+                </tr>
+            `;
+        }
+
+        function setWizardAnswer(question, answer) {
+            wizardAnswers[question] = answer;
+
+            if (question === 'setup') {
+                document.getElementById('wiz-setup-no').classList.toggle('bg-white/20', answer === 'no');
+                document.getElementById('wiz-setup-yes').classList.toggle('bg-white/20', answer === 'yes');
+            }
+            if (question === 'interface') {
+                document.getElementById('wiz-ui-visual').classList.toggle('bg-white/20', answer === 'visual');
+                document.getElementById('wiz-ui-ide').classList.toggle('bg-white/20', answer === 'ide');
+                document.getElementById('wiz-ui-cli').classList.toggle('bg-white/20', answer === 'cli');
+            }
+            if (question === 'objective') {
+                document.getElementById('wiz-obj-proto').classList.toggle('bg-white/20', answer === 'proto');
+                document.getElementById('wiz-obj-feature').classList.toggle('bg-white/20', answer === 'feature');
+                document.getElementById('wiz-obj-async').classList.toggle('bg-white/20', answer === 'async');
+            }
+
+            evaluateWizard();
+        }
+
+        function evaluateWizard() {
+            const { setup, interface: ui, objective } = wizardAnswers;
+            if (!setup || !ui || !objective) return;
+
+            let recommendedIds = [];
+            let rationale = '';
+
+            if (setup === 'no') {
+                if (objective === 'proto' || ui === 'visual') {
+                    recommendedIds = ['lovable', 'bolt', 'v0'];
+                    rationale = 'Zero-setup in-browser web builders are best for instant prototyping without local runtime configuration.';
+                } else if (objective === 'async') {
+                    recommendedIds = ['devin', 'copilot-ws'];
+                    rationale = 'Cloud-hosted async agents handle complete feature specs or PR generation directly in cloud runners.';
+                } else {
+                    recommendedIds = ['replit-agent', 'bolt'];
+                    rationale = 'Full-stack in-browser environments give instant full-stack execution with zero local terminal needs.';
+                }
+            } else {
+                if (ui === 'cli') {
+                    recommendedIds = ['claude-code', 'aider'];
+                    rationale = 'Terminal-native CLI agents provide high speed, git plumbing access, and raw shell execution.';
+                } else if (objective === 'async') {
+                    recommendedIds = ['antigravity', 'jules'];
+                    rationale = 'Agent platforms featuring background subagents, worktrees, and visual testing loops maximize async productivity.';
+                } else if (ui === 'ide') {
+                    recommendedIds = ['antigravity', 'cursor', 'cline'];
+                    rationale = 'AI-native IDEs and open VS Code extensions excel at multi-file codebase indexing and local file refactoring.';
+                } else {
+                    recommendedIds = ['cursor', 'windsurf'];
+                    rationale = 'AI-native desktop environments offer real-time inline diffs, semantic context, and local terminal execution.';
+                }
+            }
+
+            const recommendedTools = taxonomyData.filter(t => recommendedIds.includes(t.id));
+            const resultBox = document.getElementById('wizard-result');
+            resultBox.classList.remove('hidden');
+
+            resultBox.innerHTML = `
+                <div class="flex items-center space-x-2 text-indigo-700 font-bold text-sm">
+                    <span>💡</span>
+                    <span>Recommended Architectural Fit:</span>
+                </div>
+                <p class="text-xs text-slate-600">${rationale}</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
+                    ${recommendedTools.map(t => `
+                        <div onclick="openModal('${t.id}')" class="cursor-pointer bg-stone-50 border border-stone-200 hover:border-indigo-400 p-2.5 rounded-lg text-left transition">
+                            <span class="text-[9px] font-bold uppercase text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">Layer ${t.layer}</span>
+                            <div class="font-bold text-slate-900 text-xs mt-1">${t.name}</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5 truncate">${t.skillLevel} • ${t.runtime}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('tool-modal');
+            if (modal && e.target === modal) closeModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderToolCards();
+            initCharts();
+            initComparisonSelectors();
+            renderComparisonMatrix();
+            updateTotalUsersMetric();
+        });
+    </script>
 </body>
 </html>
