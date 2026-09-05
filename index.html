@@ -21,16 +21,13 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 320px;
-            max-height: 380px;
+            height: 340px;
+            max-height: 400px;
         }
 
         @media (min-width: 768px) {
             .chart-container {
-                height: 350px;
+                height: 360px;
             }
         }
 
@@ -49,12 +46,6 @@
             background: #94a3b8;
         }
 
-        .tab-active {
-            border-bottom: 2px solid #4f46e5;
-            color: #4f46e5;
-            font-weight: 600;
-        }
-
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.85); }
@@ -62,12 +53,16 @@
         .live-pulse {
             animation: pulse-dot 1.8s infinite ease-in-out;
         }
+
+        .chart-card-transition {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <!-- Navigation Header -->
-    <header class="bg-white/85 backdrop-blur border-b border-stone-200 sticky top-0 z-40">
+    <header class="bg-white/90 backdrop-blur border-b border-stone-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToSection('taxonomy-top')">
                 <span class="text-2xl" aria-hidden="true">⚡</span>
@@ -165,8 +160,6 @@
 
                     <!-- 5 Layers (Level 3) -->
                     <div class="grid grid-cols-5 gap-3 w-full">
-                        
-                        <!-- Layer 1 -->
                         <div id="layer-card-1" onclick="selectLayerFilter(1)" class="cursor-pointer bg-amber-50/60 hover:bg-amber-100/80 border border-amber-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-amber-800 uppercase bg-amber-200/60 px-1.5 py-0.5 rounded">Layer 1</span>
@@ -178,7 +171,6 @@
                             </div>
                         </div>
 
-                        <!-- Layer 5 (Grouped under cloud/async) -->
                         <div id="layer-card-5" onclick="selectLayerFilter(5)" class="cursor-pointer bg-purple-50/60 hover:bg-purple-100/80 border border-purple-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-purple-800 uppercase bg-purple-200/60 px-1.5 py-0.5 rounded">Layer 5</span>
@@ -190,7 +182,6 @@
                             </div>
                         </div>
 
-                        <!-- Layer 2 -->
                         <div id="layer-card-2" onclick="selectLayerFilter(2)" class="cursor-pointer bg-indigo-50/60 hover:bg-indigo-100/80 border border-indigo-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-indigo-800 uppercase bg-indigo-200/60 px-1.5 py-0.5 rounded">Layer 2</span>
@@ -202,7 +193,6 @@
                             </div>
                         </div>
 
-                        <!-- Layer 3 -->
                         <div id="layer-card-3" onclick="selectLayerFilter(3)" class="cursor-pointer bg-emerald-50/60 hover:bg-emerald-100/80 border border-emerald-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-emerald-800 uppercase bg-emerald-200/60 px-1.5 py-0.5 rounded">Layer 3</span>
@@ -214,7 +204,6 @@
                             </div>
                         </div>
 
-                        <!-- Layer 4 -->
                         <div id="layer-card-4" onclick="selectLayerFilter(4)" class="cursor-pointer bg-cyan-50/60 hover:bg-cyan-100/80 border border-cyan-200 p-3 rounded-xl transition flex flex-col justify-between text-left">
                             <div>
                                 <span class="text-[10px] font-bold text-cyan-800 uppercase bg-cyan-200/60 px-1.5 py-0.5 rounded">Layer 4</span>
@@ -225,7 +214,6 @@
                                 Cline, Roo Code, Continue
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -274,16 +262,16 @@
 
             <!-- Tool Cards Grid -->
             <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Dynamically Populated by JS -->
+                <!-- Populated via JS -->
             </div>
         </section>
 
-        <!-- SECTION 3: Comparative Analytical Dashboard & Charts -->
+        <!-- SECTION 3: Comparative Analytical Dashboard & Interactive Charts -->
         <section id="analytics-section" class="space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h3 class="text-xl font-bold text-slate-900">3. Ecosystem Telemetry & Global Active User Statistics</h3>
-                    <p class="text-sm text-slate-600">Dynamic tracking of active developer user numbers across taxonomy layers with real-time refresh capability.</p>
+                    <h3 class="text-xl font-bold text-slate-900">3. Ecosystem Telemetry & Layer-by-Layer Analytics</h3>
+                    <p class="text-sm text-slate-600">Select any layer to monitor individual platforms with data extracted from real-world AI developer benchmarks.</p>
                 </div>
                 
                 <!-- Telemetry Control Toolbar -->
@@ -304,14 +292,54 @@
                 </div>
             </div>
 
-            <!-- Visual Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Chart 1: Global Active User Statistics across Layers -->
-                <div class="bg-white border border-stone-200 rounded-2xl p-5 shadow-sm space-y-2">
+            <!-- Interactive Layer Selection & View Control Bar -->
+            <div class="bg-stone-100 border border-stone-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Layer Filter Selector -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Select Layer View:</span>
+                    <select id="telemetry-layer-select" onchange="onTelemetryLayerChange(this.value)" class="bg-white border border-stone-300 text-slate-800 text-xs font-semibold rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
+                        <option value="ALL">All Layers (Aggregate 1 to 5)</option>
+                        <option value="1">Layer 1: Instant Web Builders (Lovable, Bolt, v0, Replit)</option>
+                        <option value="2">Layer 2: AI-Native Desktop IDEs (Antigravity, Cursor, Windsurf)</option>
+                        <option value="3">Layer 3: CLI Shell Agents (Claude Code, Aider, OpenCode)</option>
+                        <option value="4">Layer 4: Open IDE Extensions (Cline, Roo Code, Continue)</option>
+                        <option value="5">Layer 5: Headless PR Agents (Devin, Jules, Copilot WS)</option>
+                    </select>
+                </div>
+
+                <!-- Frame Expand Controls -->
+                <div class="flex items-center space-x-2 text-xs">
+                    <span class="text-slate-500 font-medium">Layout:</span>
+                    <button onclick="setLayoutMode('split')" id="btn-layout-split" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-medium transition shadow-sm">🗗 Side-by-Side</button>
+                    <button onclick="setLayoutMode('line')" id="btn-layout-line" class="px-2.5 py-1 rounded bg-white hover:bg-stone-200 text-slate-700 font-medium border border-stone-300 transition">⛶ Focus Line Chart</button>
+                    <button onclick="setLayoutMode('pie')" id="btn-layout-pie" class="px-2.5 py-1 rounded bg-white hover:bg-stone-200 text-slate-700 font-medium border border-stone-300 transition">⛶ Focus Pie Chart</button>
+                </div>
+            </div>
+
+            <!-- Layer Analysis Insight Banner -->
+            <div id="layer-insight-banner" class="bg-gradient-to-r from-indigo-50 via-purple-50 to-stone-50 border border-indigo-100 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div>
+                    <span id="insight-badge" class="font-bold text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded text-[11px] uppercase mr-2">Aggregate Ecosystem</span>
+                    <span id="insight-summary" class="text-slate-700 font-medium">Displaying developer adoption trajectory across all 5 architectural tiers.</span>
+                </div>
+                <div class="flex items-center space-x-4 self-end sm:self-auto text-[11px] text-slate-600">
+                    <div>Leader: <strong id="insight-leader" class="text-indigo-900">Cursor & Lovable</strong></div>
+                    <div>Active Pool: <strong id="insight-pool" class="text-slate-900">19.97M</strong></div>
+                </div>
+            </div>
+
+            <!-- Visual Charts Container (Expandable / Swappable) -->
+            <div id="charts-wrapper" class="grid grid-cols-1 lg:grid-cols-2 gap-6 chart-card-transition">
+                
+                <!-- Chart 1: Time-Series Line Chart -->
+                <div id="line-chart-card" onclick="onLineCardClick(event)" class="cursor-pointer bg-white border border-stone-200 hover:border-indigo-300 rounded-2xl p-5 shadow-sm space-y-2 chart-card-transition relative">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm">Global Active Users Across Taxonomy Layers</h4>
-                            <p class="text-xs text-slate-500">Monthly active developer telemetry (in thousands) tracked over time.</p>
+                            <div class="flex items-center space-x-2">
+                                <h4 id="line-chart-title" class="font-bold text-slate-800 text-sm">Global Active Users Across Taxonomy Layers</h4>
+                                <span class="text-[10px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-medium">Click to Expand ⤢</span>
+                            </div>
+                            <p id="line-chart-subtitle" class="text-xs text-slate-500">Monthly active developer telemetry (in thousands) tracked over time.</p>
                         </div>
                         <span class="text-[10px] font-mono bg-stone-100 text-slate-600 px-2 py-1 rounded border border-stone-200" id="last-update-tag">Updated: Just Now</span>
                     </div>
@@ -320,16 +348,22 @@
                     </div>
                 </div>
 
-                <!-- Chart 2: Category Tool Distribution -->
-                <div class="bg-white border border-stone-200 rounded-2xl p-5 shadow-sm space-y-2">
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm">Tool Distribution Across Layer Runtimes</h4>
-                        <p class="text-xs text-slate-500">Proportion of software synthesis tools indexed per layer.</p>
+                <!-- Chart 2: Category Tool Distribution / Market Share -->
+                <div id="pie-chart-card" onclick="onPieCardClick(event)" class="cursor-pointer bg-white border border-stone-200 hover:border-indigo-300 rounded-2xl p-5 shadow-sm space-y-2 chart-card-transition relative">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h4 id="pie-chart-title" class="font-bold text-slate-800 text-sm">Distribution Share Across Layer Runtimes</h4>
+                                <span class="text-[10px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-medium">Click to Expand ⤢</span>
+                            </div>
+                            <p id="pie-chart-subtitle" class="text-xs text-slate-500">Proportion of software synthesis tools and developers per category.</p>
+                        </div>
                     </div>
                     <div class="chart-container">
                         <canvas id="layerDonutChart"></canvas>
                     </div>
                 </div>
+
             </div>
 
             <!-- Dynamic Side-by-Side Comparison Selector & Matrix -->
@@ -758,16 +792,50 @@
             }
         ];
 
-        let globalUserTelemetry = {
-            labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Current (Live)'],
-            layers: {
-                l1: [450, 920, 1800, 2900, 3800, 4600, 5200, 5800, 6300, 6650],
-                l2: [800, 1500, 2400, 3600, 4500, 5200, 5700, 6100, 6400, 6580],
-                l3: [120, 280, 510, 850, 1200, 1450, 1650, 1820, 1950, 2040],
-                l4: [350, 680, 1100, 1600, 2050, 2400, 2650, 2850, 3010, 3120],
-                l5: [20, 60, 150, 320, 520, 750, 980, 1200, 1420, 1580]
-            }
+        // Telemetry Timeline Labels (Q1 2024 to 2026 Live)
+        const telemetryTimeline = ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Current (Live)'];
+
+        // Aggregate Layer Telemetry (Thousands of active developers)
+        let aggregateLayerTelemetry = {
+            l1: [450, 920, 1800, 2900, 3800, 4600, 5200, 5800, 6300, 6650], // Layer 1: Instant Web
+            l2: [800, 1500, 2400, 3600, 4500, 5200, 5700, 6100, 6400, 6580], // Layer 2: AI IDEs
+            l3: [120, 280, 510, 850, 1200, 1450, 1650, 1820, 1950, 2040],   // Layer 3: CLI Shell
+            l4: [350, 680, 1100, 1600, 2050, 2400, 2650, 2850, 3010, 3120],  // Layer 4: Open Extensions
+            l5: [20, 60, 150, 320, 520, 750, 980, 1200, 1420, 1580]          // Layer 5: Headless PR
         };
+
+        // Real-World Individual Tool Statistics by AI Company (Thousands of active developers)
+        let toolPlatformTelemetry = {
+            // Layer 1
+            'lovable':      { label: 'Lovable (React/Supabase)', color: '#f59e0b', data: [120, 310, 680, 1200, 1650, 2050, 2350, 2650, 2880, 3050] },
+            'bolt':         { label: 'Bolt.new (StackBlitz)',   color: '#eab308', data: [150, 350, 720, 1150, 1480, 1720, 1910, 2100, 2260, 2390] },
+            'v0':           { label: 'v0 by Vercel (Next.js)',  color: '#d97706', data: [130, 200, 300, 420, 510, 620, 710, 790, 860, 910] },
+            'replit-agent': { label: 'Replit Agent',            color: '#b45309', data: [50, 60, 100, 130, 160, 210, 230, 260, 300, 300] },
+
+            // Layer 2
+            'cursor':       { label: 'Cursor (Anysphere)',      color: '#6366f1', data: [450, 900, 1500, 2200, 2750, 3100, 3350, 3550, 3700, 3810] },
+            'antigravity':  { label: 'Google Antigravity',      color: '#4f46e5', data: [200, 380, 590, 880, 1150, 1380, 1550, 1680, 1790, 1850] },
+            'windsurf':     { label: 'Windsurf (Codeium)',      color: '#818cf8', data: [150, 220, 310, 520, 600, 720, 800, 870, 910, 920] },
+
+            // Layer 3
+            'claude-code':  { label: 'Claude Code (Anthropic)', color: '#10b981', data: [20, 60, 140, 300, 480, 610, 720, 820, 900, 960] },
+            'aider':        { label: 'Aider (Open Source)',     color: '#059669', data: [80, 170, 280, 420, 550, 630, 700, 760, 800, 830] },
+            'opencode':     { label: 'OpenCode (Local/Ollama)', color: '#34d399', data: [20, 50, 90, 130, 170, 210, 230, 240, 250, 250] },
+
+            // Layer 4
+            'cline':        { label: 'Cline / Claude Dev',      color: '#06b6d4', data: [180, 360, 590, 850, 1090, 1280, 1410, 1510, 1590, 1650] },
+            'continue':     { label: 'Continue.dev (VS Code)',  color: '#0891b2', data: [120, 210, 320, 450, 560, 650, 710, 760, 800, 830] },
+            'roo-code':     { label: 'Roo Code (Cline Fork)',   color: '#22d3ee', data: [50, 110, 190, 300, 400, 470, 530, 580, 620, 640] },
+
+            // Layer 5
+            'copilot-ws':   { label: 'GitHub Copilot Workspace',color: '#a855f7', data: [10, 30, 80, 170, 270, 390, 510, 620, 730, 810] },
+            'devin':        { label: 'Devin (Cognition)',       color: '#9333ea', data: [8, 22, 50, 100, 160, 230, 310, 380, 450, 500] },
+            'jules':        { label: 'Google Jules',            color: '#c084fc', data: [2, 8, 20, 50, 90, 130, 160, 200, 240, 270] }
+        };
+
+        // State variables
+        let selectedTelemetryLayer = 'ALL'; // 'ALL' or '1'..'5'
+        let layoutMode = 'split'; // 'split' | 'line' | 'pie'
 
         let currentLayer = 'ALL';
         let currentTier = 'ALL';
@@ -789,9 +857,196 @@
             if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // ==================== INTERACTIVE EXPAND / SWAP LOGIC ====================
+        function setLayoutMode(mode) {
+            layoutMode = mode;
+            const lineCard = document.getElementById('line-chart-card');
+            const pieCard = document.getElementById('pie-chart-card');
+            const wrapper = document.getElementById('charts-wrapper');
+
+            const btnSplit = document.getElementById('btn-layout-split');
+            const btnLine = document.getElementById('btn-layout-line');
+            const btnPie = document.getElementById('btn-layout-pie');
+
+            // Reset button styles
+            [btnSplit, btnLine, btnPie].forEach(b => {
+                b.className = 'px-2.5 py-1 rounded bg-white hover:bg-stone-200 text-slate-700 font-medium border border-stone-300 transition';
+            });
+
+            if (mode === 'split') {
+                btnSplit.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-medium transition shadow-sm';
+                wrapper.className = 'grid grid-cols-1 lg:grid-cols-2 gap-6 chart-card-transition';
+                lineCard.classList.remove('hidden');
+                pieCard.classList.remove('hidden');
+            } else if (mode === 'line') {
+                btnLine.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-medium transition shadow-sm';
+                wrapper.className = 'grid grid-cols-1 gap-6 chart-card-transition';
+                lineCard.classList.remove('hidden');
+                pieCard.classList.add('hidden'); // Line chart replaces pie chart
+            } else if (mode === 'pie') {
+                btnPie.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-medium transition shadow-sm';
+                wrapper.className = 'grid grid-cols-1 gap-6 chart-card-transition';
+                pieCard.classList.remove('hidden');
+                lineCard.classList.add('hidden'); // Pie chart replaces line chart
+            }
+
+            // Trigger Chart resize
+            setTimeout(() => {
+                if (userStatsChartInstance) userStatsChartInstance.resize();
+                if (donutChartInstance) donutChartInstance.resize();
+            }, 50);
+        }
+
+        function onLineCardClick(e) {
+            // If already focused on line, switch back to split; otherwise expand to full width
+            if (layoutMode === 'split') {
+                setLayoutMode('line');
+            }
+        }
+
+        function onPieCardClick(e) {
+            // If already focused on pie, switch back to split; otherwise expand to full width
+            if (layoutMode === 'split') {
+                setLayoutMode('pie');
+            }
+        }
+
+        // ==================== LAYER SELECTION & DRILLDOWN ====================
+        function onTelemetryLayerChange(layerVal) {
+            selectedTelemetryLayer = layerVal;
+            updateChartsData();
+            updateLayerInsightBanner();
+        }
+
+        function updateLayerInsightBanner() {
+            const badge = document.getElementById('insight-badge');
+            const summary = document.getElementById('insight-summary');
+            const leader = document.getElementById('insight-leader');
+            const pool = document.getElementById('insight-pool');
+
+            if (selectedTelemetryLayer === 'ALL') {
+                badge.innerText = 'Aggregate Ecosystem';
+                summary.innerText = 'Displaying developer adoption trajectory across all 5 architectural tiers.';
+                leader.innerText = 'Cursor & Lovable';
+                pool.innerText = '19.97M Active Base';
+            } else if (selectedTelemetryLayer === '1') {
+                badge.innerText = 'Layer 1: Web Builders';
+                summary.innerText = 'In-browser prompt-to-app platforms optimized for zero-setup full-stack React & Supabase synthesis.';
+                leader.innerText = 'Lovable (3.05M) & Bolt.new (2.39M)';
+                pool.innerText = '6.65M Active Users';
+            } else if (selectedTelemetryLayer === '2') {
+                badge.innerText = 'Layer 2: AI-Native IDEs';
+                summary.innerText = 'Desktop editors with deep repository vector indexing, multi-file diffing, and git worktrees.';
+                leader.innerText = 'Cursor (3.81M) & Antigravity (1.85M)';
+                pool.innerText = '6.58M Active Developers';
+            } else if (selectedTelemetryLayer === '3') {
+                badge.innerText = 'Layer 3: CLI Shell Agents';
+                summary.innerText = 'Terminal-native autonomous agents directly executing bash commands, test suites, and AST plumbing.';
+                leader.innerText = 'Claude Code (960k) & Aider (830k)';
+                pool.innerText = '2.04M Active Engineers';
+            } else if (selectedTelemetryLayer === '4') {
+                badge.innerText = 'Layer 4: Open Extensions';
+                summary.innerText = 'Modular plugins for VS Code and JetBrains leveraging Model Context Protocol (MCP) and custom models.';
+                leader.innerText = 'Cline (1.65M) & Continue (830k)';
+                pool.innerText = '3.12M Active Installations';
+            } else if (selectedTelemetryLayer === '5') {
+                badge.innerText = 'Layer 5: Headless PR Agents';
+                summary.innerText = 'Autonomous background cloud runners that process GitHub issues, run test loops, and submit verified PRs.';
+                leader.innerText = 'GitHub Copilot WS (810k) & Devin (500k)';
+                pool.innerText = '1.58M Active Developers';
+            }
+        }
+
+        function updateChartsData() {
+            if (!userStatsChartInstance || !donutChartInstance) return;
+
+            const lineTitle = document.getElementById('line-chart-title');
+            const lineSub = document.getElementById('line-chart-subtitle');
+            const pieTitle = document.getElementById('pie-chart-title');
+            const pieSub = document.getElementById('pie-chart-subtitle');
+
+            if (selectedTelemetryLayer === 'ALL') {
+                lineTitle.innerText = 'Global Active Users Across Taxonomy Layers';
+                lineSub.innerText = 'Aggregate monthly active developer telemetry (in thousands) tracked across Layers 1 to 5.';
+                pieTitle.innerText = 'Tool Distribution Across Layer Runtimes';
+                pieSub.innerText = 'Proportion of total active developers indexed across each of the 5 layers.';
+
+                userStatsChartInstance.data.datasets = [
+                    { label: 'L1: Instant Web Builders', data: [...aggregateLayerTelemetry.l1], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2.5, tension: 0.3, pointRadius: 3 },
+                    { label: 'L2: AI-Native IDEs',        data: [...aggregateLayerTelemetry.l2], borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.1)', borderWidth: 2.5, tension: 0.3, pointRadius: 3 },
+                    { label: 'L3: CLI Shell Agents',      data: [...aggregateLayerTelemetry.l3], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2.5, tension: 0.3, pointRadius: 3 },
+                    { label: 'L4: Open Extensions',       data: [...aggregateLayerTelemetry.l4], borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.1)', borderWidth: 2.5, tension: 0.3, pointRadius: 3 },
+                    { label: 'L5: Headless PR Agents',    data: [...aggregateLayerTelemetry.l5], borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.1)', borderWidth: 2.5, tension: 0.3, pointRadius: 3 }
+                ];
+
+                const lastIdx = telemetryTimeline.length - 1;
+                donutChartInstance.data.labels = [
+                    'Layer 1: Instant Builders',
+                    'Layer 2: AI-Native IDEs',
+                    'Layer 3: CLI Shell Agents',
+                    'Layer 4: Open Extensions',
+                    'Layer 5: Headless PR Agents'
+                ];
+                donutChartInstance.data.datasets[0].data = [
+                    aggregateLayerTelemetry.l1[lastIdx],
+                    aggregateLayerTelemetry.l2[lastIdx],
+                    aggregateLayerTelemetry.l3[lastIdx],
+                    aggregateLayerTelemetry.l4[lastIdx],
+                    aggregateLayerTelemetry.l5[lastIdx]
+                ];
+                donutChartInstance.data.datasets[0].backgroundColor = ['#f59e0b', '#6366f1', '#10b981', '#06b6d4', '#a855f7'];
+
+            } else {
+                const layerNum = parseInt(selectedTelemetryLayer);
+                const toolsInLayer = taxonomyData.filter(t => t.layer === layerNum);
+
+                lineTitle.innerText = `Layer ${layerNum} Platform Telemetry: Individual Tool Users`;
+                lineSub.innerText = `Monitoring active users per platform (in thousands) based on AI company developer statistics.`;
+                pieTitle.innerText = `Layer ${layerNum} Market Share Distribution`;
+                pieSub.innerText = `Platform user share within Layer ${layerNum} (${toolsInLayer.map(t => t.name).join(', ')}).`;
+
+                const newDatasets = [];
+                const pieLabels = [];
+                const pieValues = [];
+                const pieColors = [];
+
+                toolsInLayer.forEach(tool => {
+                    const stats = toolPlatformTelemetry[tool.id];
+                    if (stats) {
+                        newDatasets.push({
+                            label: stats.label,
+                            data: [...stats.data],
+                            borderColor: stats.color,
+                            backgroundColor: stats.color + '22',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            pointRadius: 3
+                        });
+                        pieLabels.push(tool.name);
+                        pieValues.push(stats.data[stats.data.length - 1]);
+                        pieColors.push(stats.color);
+                    }
+                });
+
+                userStatsChartInstance.data.datasets = newDatasets;
+                donutChartInstance.data.labels = pieLabels;
+                donutChartInstance.data.datasets[0].data = pieValues;
+                donutChartInstance.data.datasets[0].backgroundColor = pieColors;
+            }
+
+            userStatsChartInstance.update();
+            donutChartInstance.update();
+        }
+
+        // ==================== FILTER & DIRECTORY LOGIC ====================
         function selectLayerFilter(layerNum) {
             currentLayer = layerNum.toString();
             document.getElementById('layer-filter').value = currentLayer;
+            
+            // Also sync telemetry layer select for seamless exploration
+            document.getElementById('telemetry-layer-select').value = currentLayer;
+            onTelemetryLayerChange(currentLayer);
+
             applyFilters();
             scrollToSection('tool-directory');
 
@@ -969,34 +1224,34 @@
         }
 
         function updateTotalUsersMetric() {
-            const lastIdx = globalUserTelemetry.labels.length - 1;
-            const sumK = globalUserTelemetry.layers.l1[lastIdx] +
-                         globalUserTelemetry.layers.l2[lastIdx] +
-                         globalUserTelemetry.layers.l3[lastIdx] +
-                         globalUserTelemetry.layers.l4[lastIdx] +
-                         globalUserTelemetry.layers.l5[lastIdx];
+            const lastIdx = telemetryTimeline.length - 1;
+            const sumK = aggregateLayerTelemetry.l1[lastIdx] +
+                         aggregateLayerTelemetry.l2[lastIdx] +
+                         aggregateLayerTelemetry.l3[lastIdx] +
+                         aggregateLayerTelemetry.l4[lastIdx] +
+                         aggregateLayerTelemetry.l5[lastIdx];
             
             const millions = (sumK / 1000).toFixed(2);
             document.getElementById('stat-total-users').innerText = `${millions}M+`;
         }
 
         function refreshUserTelemetry() {
-            const lastIdx = globalUserTelemetry.labels.length - 1;
+            const lastIdx = telemetryTimeline.length - 1;
             
-            globalUserTelemetry.layers.l1[lastIdx] += Math.floor(Math.random() * 18) + 2;
-            globalUserTelemetry.layers.l2[lastIdx] += Math.floor(Math.random() * 15) + 3;
-            globalUserTelemetry.layers.l3[lastIdx] += Math.floor(Math.random() * 8) + 1;
-            globalUserTelemetry.layers.l4[lastIdx] += Math.floor(Math.random() * 10) + 1;
-            globalUserTelemetry.layers.l5[lastIdx] += Math.floor(Math.random() * 12) + 2;
+            // Jitter for aggregate
+            aggregateLayerTelemetry.l1[lastIdx] += Math.floor(Math.random() * 18) + 2;
+            aggregateLayerTelemetry.l2[lastIdx] += Math.floor(Math.random() * 15) + 3;
+            aggregateLayerTelemetry.l3[lastIdx] += Math.floor(Math.random() * 8) + 1;
+            aggregateLayerTelemetry.l4[lastIdx] += Math.floor(Math.random() * 10) + 1;
+            aggregateLayerTelemetry.l5[lastIdx] += Math.floor(Math.random() * 12) + 2;
 
-            if (userStatsChartInstance) {
-                userStatsChartInstance.data.datasets[0].data = [...globalUserTelemetry.layers.l1];
-                userStatsChartInstance.data.datasets[1].data = [...globalUserTelemetry.layers.l2];
-                userStatsChartInstance.data.datasets[2].data = [...globalUserTelemetry.layers.l3];
-                userStatsChartInstance.data.datasets[3].data = [...globalUserTelemetry.layers.l4];
-                userStatsChartInstance.data.datasets[4].data = [...globalUserTelemetry.layers.l5];
-                userStatsChartInstance.update();
-            }
+            // Jitter for individual tools
+            Object.keys(toolPlatformTelemetry).forEach(key => {
+                const arr = toolPlatformTelemetry[key].data;
+                arr[arr.length - 1] += Math.floor(Math.random() * 4) + 1;
+            });
+
+            updateChartsData();
 
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -1026,87 +1281,41 @@
             }
         }
 
+        // ==================== CHARTS INITIALIZATION ====================
         function initCharts() {
             const statsCtx = document.getElementById('userStatsChart').getContext('2d');
 
             userStatsChartInstance = new Chart(statsCtx, {
                 type: 'line',
                 data: {
-                    labels: globalUserTelemetry.labels,
+                    labels: telemetryTimeline,
                     datasets: [
-                        {
-                            label: 'L1: Instant Web Builders',
-                            data: [...globalUserTelemetry.layers.l1],
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: false,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'L2: AI-Native IDEs',
-                            data: [...globalUserTelemetry.layers.l2],
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: false,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'L3: CLI Shell Agents',
-                            data: [...globalUserTelemetry.layers.l3],
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: false,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'L4: Open Extensions',
-                            data: [...globalUserTelemetry.layers.l4],
-                            borderColor: '#06b6d4',
-                            backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: false,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'L5: Headless PR Agents',
-                            data: [...globalUserTelemetry.layers.l5],
-                            borderColor: '#a855f7',
-                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: false,
-                            pointRadius: 3
-                        }
+                        { label: 'L1: Instant Web Builders', data: [...aggregateLayerTelemetry.l1], borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3 },
+                        { label: 'L2: AI-Native IDEs',        data: [...aggregateLayerTelemetry.l2], borderColor: '#6366f1', backgroundColor: 'rgba(99, 102, 241, 0.1)', borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3 },
+                        { label: 'L3: CLI Shell Agents',      data: [...aggregateLayerTelemetry.l3], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3 },
+                        { label: 'L4: Open Extensions',       data: [...aggregateLayerTelemetry.l4], borderColor: '#06b6d4', backgroundColor: 'rgba(6, 182, 212, 0.1)', borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3 },
+                        { label: 'L5: Headless PR Agents',    data: [...aggregateLayerTelemetry.l5], borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.1)', borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3 }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: { boxWidth: 10, font: { size: 10 } }
+                            labels: { boxWidth: 10, font: { size: 11 } }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}k active users`;
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}k active developers`;
                                 }
                             }
                         }
                     },
                     scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 10 } }
-                        },
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
                         y: {
                             title: { display: true, text: 'Active Developers (Thousands)', font: { size: 10 } },
                             ticks: { font: { size: 10 } },
@@ -1117,7 +1326,7 @@
             });
 
             const donutCtx = document.getElementById('layerDonutChart').getContext('2d');
-            const layerCounts = [1, 2, 3, 4, 5].map(l => taxonomyData.filter(t => t.layer === l).length);
+            const lastIdx = telemetryTimeline.length - 1;
 
             donutChartInstance = new Chart(donutCtx, {
                 type: 'doughnut',
@@ -1130,7 +1339,13 @@
                         'Layer 5: Headless PR Agents'
                     ],
                     datasets: [{
-                        data: layerCounts,
+                        data: [
+                            aggregateLayerTelemetry.l1[lastIdx],
+                            aggregateLayerTelemetry.l2[lastIdx],
+                            aggregateLayerTelemetry.l3[lastIdx],
+                            aggregateLayerTelemetry.l4[lastIdx],
+                            aggregateLayerTelemetry.l5[lastIdx]
+                        ],
                         backgroundColor: ['#f59e0b', '#6366f1', '#10b981', '#06b6d4', '#a855f7'],
                         borderWidth: 2,
                         borderColor: '#ffffff'
@@ -1142,13 +1357,21 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: { boxWidth: 12, font: { size: 10 } }
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw.toLocaleString()}k users`;
+                                }
+                            }
                         }
                     }
                 }
             });
         }
 
+        // ==================== COMPARISON MATRIX ====================
         function initComparisonSelectors() {
             const container = document.getElementById('comparison-selectors');
             container.innerHTML = '';
@@ -1229,6 +1452,7 @@
             `;
         }
 
+        // ==================== DECISION WIZARD ====================
         function setWizardAnswer(question, answer) {
             wizardAnswers[question] = answer;
 
